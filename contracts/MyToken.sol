@@ -29,10 +29,15 @@ contract MyToken {
   function buyToken() public payable {
 
     uint amount = msg.value * 100 / 1000000000000000000;
-    //require(ethBalanceOf(msg.sender) >= amount/100, "not enough ether");
-    //require(msg.sender != address(0));
+    require(ethBalanceOf(msg.sender) >= amount/100, "not enough ether");
+    require(msg.sender != address(0));
     
     _balances[msg.sender] += amount;
+  }
+  function sellToken(uint amount) public payable {
+    transfer(msg.sender, address(this), amount);
+     payable(msg.sender).transfer(amount / 100 * 1000000000000000000);
+     
   }
   function getTotalSupply() public view returns (uint256) {
       return totalSupply;

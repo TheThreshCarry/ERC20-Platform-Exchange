@@ -23,12 +23,17 @@ contract('MyToken', (accounts) => {
             let balanceOfInvestor = await myToken.balanceOf(accounts[1]);
            assert.equal(balanceOfInvestor.toString(), 100, "has 100 tokens");
         })
-        it("can transfer MyToken", async () => {
+        it('can sell with mytoken', async () => {
+            await myToken.sellToken(100, {from: accounts[1]});
+            let balanceOfInvestor = await myToken.balanceOf(accounts[1]);
+           assert.equal(balanceOfInvestor.toString(), 0, "has 0 tokens");
+        })
+       /* it("can transfer MyToken", async () => {
             await myToken.transfer(accounts[1], myToken.address, 100);
             balanceSender = await myToken.balanceOf(accounts[1]);
             balanceSwap = await myToken.balanceOf(myToken.address);
             assert.equal(balanceSender, 0);
-        })
+        })*/
     })
   
 });
