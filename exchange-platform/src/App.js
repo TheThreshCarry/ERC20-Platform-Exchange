@@ -26,12 +26,12 @@ function App() {
   }, [])
 
   async function buyTokens(value){
-    await contract.methods.buyToken().send({from: ethAddress, value: Web3.utils.toWei(value)}).then((rec) => {
+    await contract.methods.buyToken().send({from: ethAddress, value: Web3.utils.toWei((value/100).toString())}).then((rec) => {
       console.log(rec);
       loadBlockChainData();
       Swal.fire(
         'Good job!',
-        'You Bought ' + (value*100) +' myToken for ' + (value) + 'ETH',
+        'You Bought ' + (value*100) +' HeadToken for ' + (value) + 'ETH',
         'success'
       )
     });
@@ -43,7 +43,7 @@ function App() {
       loadBlockChainData();
       Swal.fire(
         'Good job!',
-        'You Sold ' + value +' myToken for ' + (value/100) + 'ETH',
+        'You Sold ' + value +' HeadToken for ' + (value/100) + 'ETH',
         'success'
       )
     });
@@ -64,8 +64,9 @@ function App() {
     setEthBalance(web3.utils.fromWei(ethBalance));
 
     //get Contract
-    const abi = MyToken.abi;
-    const address = "0xdC78afe9cFDe0576Ff236667DC8c380615c24Ca9";
+    const abi = MyToken;
+    const address = "0x3FFb7db9b370aC2D997dE18960da96DC1243f0D7";
+    console.log(abi);
 
     const myToken = new web3.eth.Contract(abi, address);
     setContract(myToken);
@@ -76,10 +77,8 @@ function App() {
   async function loadWeb3() {
     if (window.ethereum) {
       window.web3 = new Web3(window.ethereum);
-      console.log("Found Ethereum Provider");
     } else if (window.web3) {
       window.web3 = new Web3(window.web3.currentProvider);
-      console.log("Found Web3 Provider");
     } else {
       alert("Didn't find any web3 provider !");
     }
@@ -87,7 +86,7 @@ function App() {
   return (
     <div className="App">
       <AppBar position="static">
-        <div className="appBar">MyToken Exchange</div>
+        <div className="appBar">HeadToken Exchange</div>
       </AppBar>
 
       {loadingData && <div>Loading Data...</div>}
@@ -100,19 +99,21 @@ function App() {
               <div className="amount">you have : {ethBalance} eth</div>
             </div>
             <div className="button-row">
-              <TextField variant="outlined" label="Buy Tokens" id="sellTokensButton" fullWidth value={buyInput} onChange={(e) => {setBuyInput(e.target.value);console.log(e.target.value)}}/>
-              <Button variant="contained" onClick={() => {buyTokens(buyInput)}}>Buy MyToken</Button>
+              <TextField variant="outlined" label="Buy Tokens" id="sellTokensButton" fullWidth value={buyInput} onChange={(e) => {setBuyInput(e.target.value);}}/>
+              <Button variant="contained" onClick={() => {buyTokens(buyInput)}}>Buy HeadToken</Button>
             </div>
+            <div className="amount"> For : {buyInput / 100} eth</div>
           </div>
           <div className="fullWidth">
             <div className="text-line">
               <div className="Title">Sell Tokens</div>
-              <div className="amount">you have : {myTokenBalance} MyToken</div>
+              <div className="amount">you have : {myTokenBalance} HeadToken</div>
             </div>
             <div className="button-row">
-              <TextField variant="outlined" label="Sell Tokens" id="sellTokensButton" fullWidth value={sellInput} onChange={(e) => {setSellInput(e.target.value);console.log(e.target.value)}}/>
-              <Button variant="contained" onClick={() => {sellTokens(sellInput)}}>Sell MyToken</Button>
+              <TextField variant="outlined" label="Sell Tokens" id="sellTokensButton" fullWidth value={sellInput} onChange={(e) => {setSellInput(e.target.value);}}/>
+              <Button variant="contained" onClick={() => {sellTokens(sellInput)}}>Sell HeadToken</Button>
             </div>
+            <div className="amount"> For : {sellInput / 100} eth</div>
           </div>
 
 
